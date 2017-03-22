@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Tinkoff-Chat</string>
+
+    <string name="app_name_api16">Tinkoff-Chat-API16</string>
+    <string name="app_name_api19">Tinkoff-Chat-API19</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_dialog">DialogActivity</string>
 </resources>

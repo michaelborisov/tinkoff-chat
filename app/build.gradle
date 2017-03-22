@@ -11,20 +11,56 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            keyAlias 'BlaBla'
+            keyPassword '123456'
+            storeFile file('../cert/tcsSchool.jks')
+            storePassword '123456'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            //resValue "string", "app_name", 'app_name_api16'
+        }
+        prodDebug {
+            initWith debug
+            applicationIdSuffix ".prodDebug"
+            //resValue "string", "app_name", '"AppProdDebug"'
+        }
+    }
+    productFlavors {
+        api16 {
+            minSdkVersion 16
+            resValue "string", "app_name", "AppFlavor16"
+        }
+
+        api19{
+            minSdkVersion 19
+            resValue "string", "app_name", "AppFlavor19"
+        }
+
+        api21 {
+            minSdkVersion 21
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }
