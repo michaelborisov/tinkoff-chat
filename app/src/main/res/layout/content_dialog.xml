@@ -13,4 +13,6 @@
     tools:context="borisov.ru.tinkoff_chat.activities.DialogActivity"
     tools:showIn="@layout/activity_dialog">
 
+
+
 </RelativeLayout>
