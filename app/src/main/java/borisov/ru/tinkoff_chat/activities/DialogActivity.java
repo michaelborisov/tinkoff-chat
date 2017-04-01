@@ -2,8 +2,6 @@ package borisov.ru.tinkoff_chat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import borisov.ru.tinkoff_chat.R;
-import borisov.ru.tinkoff_chat.adapters.DialogsAdapter;
+import borisov.ru.tinkoff_chat.adapters.DialogAdapter;
 import borisov.ru.tinkoff_chat.interfaces.OnItemClickListener;
 import borisov.ru.tinkoff_chat.items.DialogItem;
 
@@ -33,21 +31,8 @@ public class DialogActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initRecyclerView();
-
-        subscribeOnAboutButton();
     }
 
-    private void subscribeOnAboutButton(){
-        ImageButton imAbout = (ImageButton)findViewById(R.id.image_button_about);
-        imAbout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent goToAbout = new Intent(getApplicationContext(), StartActivity.class);
-                startActivity(goToAbout);
-
-            }
-        });
-    }
 
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_dialogs);
@@ -55,7 +40,7 @@ public class DialogActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogsAdapter(createDataset(), new OnItemClickListener() {
+        adapter = new DialogAdapter(createDataset(), new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(DialogActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
