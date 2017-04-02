@@ -3,7 +3,9 @@ package borisov.ru.tinkoff_chat.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -69,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        checkCredentials();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -91,14 +94,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View view) {
                 Intent goToNav = new Intent(getApplicationContext(), NavigationActivity.class);
                 goToNav.putExtra("userName", mEmailView.getText().toString());
+                saveCredentials(mEmailView.getText().toString(), mPasswordView.getText().toString());
                 startActivity(goToNav);
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
     }
 
+    private void checkCredentials (){
+        String[] credentials = readCredentials();
+        if (!credentials[0].equals("") && !credentials[1].equals("")){
+            Intent goToNav = new Intent(getApplicationContext(), NavigationActivity.class);
+            goToNav.putExtra("userName", credentials[0]);
+            startActivity(goToNav);
+        }
+    }
+
+    private void saveCredentials(String username, String password ){
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.user_name_key), username);
+        editor.putString(getString(R.string.user_password_key), password);
+        editor.apply();
+
+    }
+
+    private String[] readCredentials(){
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String userName = sharedPref.getString(getString(R.string.user_name_key), "");
+        String userPassword = sharedPref.getString(getString(R.string.user_password_key), "");
+        return new String[]{userName, userPassword};
+    }
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;

@@ -1,5 +1,7 @@
 package borisov.ru.tinkoff_chat.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +45,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 replaceFragment(dialogsFragment);
                 break;
             case R.id.nav_settings:
+                deleteCredentials();
                 SettingsFragment settingsFragment = SettingsFragment.newInstance("Настройки");
                 replaceFragment(settingsFragment);
                 break;
@@ -51,6 +54,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 replaceFragment(aboutFragment);
                 break;
             case R.id.nav_exit:
+                deleteCredentials();
                 finish();
                 break;
         }
@@ -60,6 +64,13 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
+    private void deleteCredentials(){
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(getString(R.string.user_name_key));
+        editor.remove(getString(R.string.user_password_key));
+        editor.clear();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +103,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction = fragmentTransaction.replace(R.id.content_navigation, fragment);
-        fragmentTransaction.setCustomAnimations(
-                R.animator.fade_in,
-                R.animator.fade_out
-        );
         fragmentTransaction.commit();
     }
 
