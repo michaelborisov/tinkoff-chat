@@ -25,12 +25,22 @@
 
     <include layout="@layout/content_dialog" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_dialogs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:scrollbars="vertical">
     </android.support.v7.widget.RecyclerView>
+
+    <borisov.ru.tinkoff_chat.ui.widgets.MessageSend
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

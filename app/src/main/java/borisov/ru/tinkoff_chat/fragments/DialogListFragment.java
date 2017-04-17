@@ -16,6 +16,7 @@ import java.util.List;
 
 import borisov.ru.tinkoff_chat.R;
 import borisov.ru.tinkoff_chat.activities.DialogActivity;
+import borisov.ru.tinkoff_chat.activities.MainActivity;
 import borisov.ru.tinkoff_chat.activities.NavigationActivity;
 import borisov.ru.tinkoff_chat.adapters.DialogAdapter;
 import borisov.ru.tinkoff_chat.adapters.DialogsListAdapter;
@@ -54,7 +55,7 @@ public class DialogListFragment extends Fragment {
         RecyclerView.Adapter adapter = new DialogsListAdapter(createDataset(), new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent goToDialog = new Intent(getContext(), DialogActivity.class);
+                Intent goToDialog = new Intent(getContext(), DialogActivity.class); //MainActivity.class);
                 startActivity(goToDialog);
             }
         });
