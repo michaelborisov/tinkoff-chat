@@ -45,7 +45,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 replaceFragment(dialogsFragment);
                 break;
             case R.id.nav_settings:
-                deleteCredentials();
                 SettingsFragment settingsFragment = SettingsFragment.newInstance("Настройки");
                 replaceFragment(settingsFragment);
                 break;
@@ -67,9 +66,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private void deleteCredentials(){
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.remove(getString(R.string.user_name_key));
-        editor.remove(getString(R.string.user_password_key));
-        editor.clear();
+        editor.putString(getString(R.string.user_name_key), "");
+        editor.putString(getString(R.string.user_password_key), "");
+        editor.apply();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +102,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction = fragmentTransaction.replace(R.id.content_navigation, fragment);
+//        fragmentTransaction.setCustomAnimations(
+//                R.animator.fade_in,
+//                R.animator.fade_out
+//        );
         fragmentTransaction.commit();
     }
 

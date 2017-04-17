@@ -98,4 +98,9 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Войти</string>
+
 </resources>

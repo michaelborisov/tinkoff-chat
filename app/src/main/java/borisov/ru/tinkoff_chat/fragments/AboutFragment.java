@@ -1,5 +1,7 @@
 package borisov.ru.tinkoff_chat.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
