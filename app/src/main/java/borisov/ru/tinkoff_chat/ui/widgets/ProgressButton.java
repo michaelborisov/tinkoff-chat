@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,9 +14,11 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 import borisov.ru.tinkoff_chat.R;
 
-public class ProgressButton extends FrameLayout implements View.OnTouchListener {
+public class ProgressButton extends FrameLayout implements View.OnTouchListener, Serializable {
 
     private View background;
     private TextView textView;
