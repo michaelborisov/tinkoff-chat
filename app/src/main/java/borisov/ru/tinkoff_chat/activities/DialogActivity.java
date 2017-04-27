@@ -1,7 +1,10 @@
 package borisov.ru.tinkoff_chat.activities;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +22,7 @@ import borisov.ru.tinkoff_chat.adapters.DialogAdapter;
 import borisov.ru.tinkoff_chat.interfaces.OnItemClickListener;
 import borisov.ru.tinkoff_chat.items.DialogItem;
 
-public class DialogActivity extends AppCompatActivity {
+public class DialogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<DialogItem>> {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -30,17 +33,17 @@ public class DialogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dialog);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        initRecyclerView();
+        getLoaderManager().initLoader(0, null, this);
     }
 
 
-    private void initRecyclerView() {
+    private void initRecyclerView(List<DialogItem> dataSet) {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_dialogs);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogAdapter(createDataset(), new OnItemClickListener() {
+        adapter = new DialogAdapter(dataSet, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(DialogActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
@@ -51,6 +54,57 @@ public class DialogActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
     }
+
+
+    @Override
+    public Loader<List<DialogItem>> onCreateLoader(int id, Bundle args) {
+
+
+            Loader<List<DialogItem>> mLoader = new Loader<List<DialogItem>>(this){
+                @Override
+                protected void onStartLoading() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(10000);
+                            }catch (InterruptedException ex){
+                                ex.printStackTrace();
+                            }
+                            deliverResult(createDataset());
+                        }
+                    }).start();
+
+                }
+
+                @Override
+                protected void onStopLoading() {
+
+                }
+
+            };
+        return mLoader;
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<DialogItem>> loader, final List<DialogItem> data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initRecyclerView(data);
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader<List<DialogItem>> loader) {
+
+    }
+
+
 
     private List<DialogItem> createDataset() {
         List<DialogItem> list = new ArrayList<>();
