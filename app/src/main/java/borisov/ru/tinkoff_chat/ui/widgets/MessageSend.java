@@ -48,26 +48,26 @@ public class MessageSend extends LinearLayout {
         editText = (AppCompatEditText) findViewById(R.id.edit_text_message);
         sendButton = (AppCompatButton) findViewById(R.id.btn_send_message);
         requestLayout();
-//        editText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if(charSequence.length() == 0){
-//                    sendButton.setEnabled(false);
-//                }else{
-//                    sendButton.setEnabled(true);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() == 0){
+                    sendButton.setEnabled(false);
+                }else{
+                    sendButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         final TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ProgressButton);
         if (typedArray != null) {
