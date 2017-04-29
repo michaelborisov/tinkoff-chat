@@ -11,7 +11,7 @@ import java.util.List;
 
 import borisov.ru.tinkoff_chat.R;
 import borisov.ru.tinkoff_chat.interfaces.OnItemClickListener;
-import borisov.ru.tinkoff_chat.items.DialogItem;
+import borisov.ru.tinkoff_chat.db.models.Dialog;
 
 public class DialogsListAdapter extends RecyclerView.Adapter<DialogsListAdapter.MessageViewHolder> {
 
@@ -19,10 +19,10 @@ public class DialogsListAdapter extends RecyclerView.Adapter<DialogsListAdapter.
     private static final int TYPE_RECEIVED_MESSAGE  = 0;
     private static final int TYPE_MY_MESSAGE = 1;
 
-    private List<DialogItem> dataset;
+    private List<Dialog> dataset;
     private OnItemClickListener clickListener;
 
-    public DialogsListAdapter(List<DialogItem> dataset, OnItemClickListener clickListener) {
+    public DialogsListAdapter(List<Dialog> dataset, OnItemClickListener clickListener) {
         this.dataset = dataset;
         this.clickListener = clickListener;
     }
@@ -50,12 +50,12 @@ public class DialogsListAdapter extends RecyclerView.Adapter<DialogsListAdapter.
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         if(holder instanceof MyMessageViewHolder) {
             ((MyMessageViewHolder) holder).title.setText(dataset.get(position).getTitle());
-            ((MyMessageViewHolder) holder).desc.setText(dataset.get(position).getDesc());
+            ((MyMessageViewHolder) holder).desc.setText(dataset.get(position).getDescription());
         }else{
             ((ReceivedMessageViewHolder) holder).title.setGravity(Gravity.END);
             ((ReceivedMessageViewHolder) holder).desc.setGravity(Gravity.END);
             ((ReceivedMessageViewHolder) holder).title.setText(dataset.get(position).getTitle());
-            ((ReceivedMessageViewHolder) holder).desc.setText(dataset.get(position).getDesc());
+            ((ReceivedMessageViewHolder) holder).desc.setText(dataset.get(position).getDescription());
         }
 
     }
@@ -124,5 +124,10 @@ public class DialogsListAdapter extends RecyclerView.Adapter<DialogsListAdapter.
                 }
             });
         }
+    }
+
+    public void addDialog(Dialog dialog){
+        dataset.add(dialog);
+        this.notifyDataSetChanged();
     }
 }

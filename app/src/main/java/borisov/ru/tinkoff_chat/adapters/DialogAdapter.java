@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import borisov.ru.tinkoff_chat.R;
 import borisov.ru.tinkoff_chat.interfaces.OnItemClickListener;
-import borisov.ru.tinkoff_chat.items.DialogItem;
+import borisov.ru.tinkoff_chat.db.models.Message;
 
 public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MessageViewHolder> {
 
@@ -19,10 +20,10 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MessageVie
     private static final int TYPE_MY_MESSAGE = 0;
     private static final int TYPE_RECEIVED_MESSAGE = 1;
 
-    private List<DialogItem> dataset;
+    private List<Message> dataset;
     private OnItemClickListener clickListener;
 
-    public DialogAdapter(List<DialogItem> dataset, OnItemClickListener clickListener) {
+    public DialogAdapter(List<Message> dataset, OnItemClickListener clickListener) {
         this.dataset = dataset;
         this.clickListener = clickListener;
     }
@@ -49,13 +50,17 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.MessageVie
     @Override
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         if(holder instanceof MyMessageViewHolder) {
-            ((MyMessageViewHolder) holder).title.setText(dataset.get(position).getTitle());
-            ((MyMessageViewHolder) holder).desc.setText(dataset.get(position).getDesc());
+            ((MyMessageViewHolder) holder).title.setText(
+                    String.valueOf(dataset.get(position).getAuthorId())
+            );
+            ((MyMessageViewHolder) holder).desc.setText(dataset.get(position).getMessageText());
         }else{
             ((ReceivedMessageViewHolder) holder).title.setGravity(Gravity.END);
             ((ReceivedMessageViewHolder) holder).desc.setGravity(Gravity.END);
-            ((ReceivedMessageViewHolder) holder).title.setText(dataset.get(position).getTitle());
-            ((ReceivedMessageViewHolder) holder).desc.setText(dataset.get(position).getDesc());
+            ((ReceivedMessageViewHolder) holder).title.setText(
+                    String.valueOf(dataset.get(position).getAuthorId())
+            );
+            ((ReceivedMessageViewHolder) holder).desc.setText(dataset.get(position).getMessageText());
         }
 
     }

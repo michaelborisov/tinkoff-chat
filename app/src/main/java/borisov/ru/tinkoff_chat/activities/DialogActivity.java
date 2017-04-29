@@ -1,10 +1,11 @@
 package borisov.ru.tinkoff_chat.activities;
 
 import android.app.LoaderManager;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.content.Loader;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -13,18 +14,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import borisov.ru.tinkoff_chat.R;
 import borisov.ru.tinkoff_chat.adapters.DialogAdapter;
 import borisov.ru.tinkoff_chat.interfaces.OnItemClickListener;
-import borisov.ru.tinkoff_chat.items.DialogItem;
+import borisov.ru.tinkoff_chat.db.models.Message;
 
-public class DialogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<DialogItem>> {
+
+public class DialogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Message>> {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -32,7 +36,8 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
     private AppCompatButton btnSend;
     private AppCompatEditText etMessage;
 
-    private List<DialogItem> messages;
+    private List<Message> messages;
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +51,13 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateMessages(new DialogItem("Me", etMessage.getText().toString()));
+                Message mes = new Message(etMessage.getText().toString(), 1, new Date());
+                mes.save();
+                updateMessages(mes);
                 etMessage.getText().clear();
             }
         });
+        showLoader();
 
 
         setSupportActionBar(toolbar);
@@ -57,7 +65,7 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
     }
 
 
-    private void initRecyclerView(List<DialogItem> dataSet) {
+    private void initRecyclerView(List<Message> dataSet) {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_dialogs);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -77,16 +85,22 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
-    private void updateMessages(DialogItem message){
-        messages.add(message);
-        adapter.notifyDataSetChanged();
+    private void updateMessages(final Message message){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                messages.add(message);
+                adapter.notifyDataSetChanged();
+            }
+        }, 1);
     }
 
     @Override
-    public Loader<List<DialogItem>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Message>> onCreateLoader(int id, Bundle args) {
 
 
-            Loader<List<DialogItem>> mLoader = new Loader<List<DialogItem>>(this){
+            Loader<List<Message>> mLoader = new Loader<List<Message>>(this){
                 @Override
                 protected void onStartLoading() {
                     new Thread(new Runnable() {
@@ -97,7 +111,7 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
                             }catch (InterruptedException ex){
                                 ex.printStackTrace();
                             }
-                            deliverResult(createDataset());
+                            deliverResult(loadDataset());
                         }
                     }).start();
 
@@ -114,32 +128,38 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onLoadFinished(Loader<List<DialogItem>> loader, final List<DialogItem> data) {
+    public void onLoadFinished(Loader<List<Message>> loader, final List<Message> data) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 initRecyclerView(data);
+                hideLoader();
             }
         });
 
     }
 
 
+
     @Override
-    public void onLoaderReset(Loader<List<DialogItem>> loader) {
+    public void onLoaderReset(Loader<List<Message>> loader) {
 
     }
 
 
+    public void showLoader(){
+        progress = new ProgressDialog(this);
+        progress.setTitle("Загружаем");
+        progress.setMessage("Сообщения в диалоге");
+        progress.setCancelable(false);
+        progress.show();
+    }
 
-    private List<DialogItem> createDataset() {
-        List<DialogItem> list = new ArrayList<>();
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        list.add(new DialogItem("title", "desc"));
-        return list;
+    public void hideLoader(){
+        progress.dismiss();
+    }
+
+    private List<Message> loadDataset() {
+        return SQLite.select().from(Message.class).queryList();
     }
 }
