@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.SettingsFragment"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:animateLayoutChanges="true"
+    >
 
     <TextView
         android:id="@+id/text_view_stub"
@@ -15,6 +17,8 @@
         tools:text="Название" />
 
     <ImageView
+        android:animateLayoutChanges="true"
+        android:id="@+id/battery"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"

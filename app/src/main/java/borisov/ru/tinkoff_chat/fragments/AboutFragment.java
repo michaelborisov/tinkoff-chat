@@ -3,13 +3,17 @@ package borisov.ru.tinkoff_chat.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import borisov.ru.tinkoff_chat.R;
+import borisov.ru.tinkoff_chat.activities.NavigationActivity;
 
 public class AboutFragment extends Fragment {
 
@@ -39,6 +43,17 @@ public class AboutFragment extends Fragment {
         TextView textViewTitle = (TextView) view.findViewById(R.id.text_view_stub);
         textViewTitle.setText("Этот чудесный мессенджер является разработкой в " +
                 "рамках курса Android Финтех Тинькофф");
+
+
+        ImageView battery = (ImageView)view.findViewById(R.id.battery);
+        battery.animate().x(250).y(150);
+        TransitionManager.beginDelayedTransition((ViewGroup) view);
+        ViewGroup.LayoutParams params = battery.getLayoutParams();
+        params.width = 500;
+        params.height = 500;
+        battery.setLayoutParams(params);
+        
+
         return view;
     }
 }

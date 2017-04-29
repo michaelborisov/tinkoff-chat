@@ -51,7 +51,7 @@ public class MessageSend extends LinearLayout {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                //empty
             }
 
             @Override
@@ -65,15 +65,10 @@ public class MessageSend extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                //empty
             }
         });
 
-        final TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ProgressButton);
-        if (typedArray != null) {
-
-            typedArray.recycle();
-        }
 
 
     }

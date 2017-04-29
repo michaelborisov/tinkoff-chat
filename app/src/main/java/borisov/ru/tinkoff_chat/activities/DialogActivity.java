@@ -6,6 +6,8 @@ import android.content.Loader;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,11 +29,29 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    private AppCompatButton btnSend;
+    private AppCompatEditText etMessage;
+
+    private List<DialogItem> messages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        etMessage = (AppCompatEditText)findViewById(R.id.edit_text_message);
+
+        btnSend = (AppCompatButton)findViewById(R.id.btn_send_message);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateMessages(new DialogItem("Me", etMessage.getText().toString()));
+                etMessage.getText().clear();
+            }
+        });
+
+
         setSupportActionBar(toolbar);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -41,9 +61,11 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_dialogs);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true);
+        //layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogAdapter(dataSet, new OnItemClickListener() {
+
+        messages = dataSet;
+        adapter = new DialogAdapter(messages, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(DialogActivity.this, "position = " + position, Toast.LENGTH_SHORT).show();
@@ -55,6 +77,10 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
+    private void updateMessages(DialogItem message){
+        messages.add(message);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public Loader<List<DialogItem>> onCreateLoader(int id, Bundle args) {
@@ -67,7 +93,7 @@ public class DialogActivity extends AppCompatActivity implements LoaderManager.L
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(10000);
+                                Thread.sleep(5000);
                             }catch (InterruptedException ex){
                                 ex.printStackTrace();
                             }

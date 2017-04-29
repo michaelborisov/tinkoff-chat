@@ -10,4 +10,6 @@
     <color name="green_light">#d9f8b5</color>
     <color name="green">#aed581</color>
     <color name="green_dark">#76b132</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

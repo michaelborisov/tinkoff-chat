@@ -14,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".services.LoginService" />
+
         <activity
             android:name=".activities.NavigationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:animateLayoutChanges="true"/>
         <activity
             android:name=".activities.StartActivity"
             android:label="@string/app_name"
@@ -29,13 +31,20 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="Авторизация">
+        </activity>
+        <activity android:name=".activities.MainActivity" />
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Чат-Борисов"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity"></activity>
     </application>
 
 </manifest>
