@@ -65,6 +65,15 @@ public class Dialog extends BaseModel {
         this.creationTime = creationTime;
     }
 
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+
     @PrimaryKey(autoincrement = true)
     private Integer id;
 
@@ -77,6 +86,8 @@ public class Dialog extends BaseModel {
     @Column
     private Date creationTime;
 
+    @Column
+    private String lastMessage;
 
 
 

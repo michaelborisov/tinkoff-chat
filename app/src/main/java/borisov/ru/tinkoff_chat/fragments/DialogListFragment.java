@@ -74,7 +74,7 @@ public class DialogListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int size = loadDataset().size();
+                long size = countDataset();
                 Dialog mDialog = new Dialog("Чат " + size, "Описание " + size, new Date());
                 mDialog.save();
                 mAdapter.addDialog(mDialog);
@@ -84,7 +84,10 @@ public class DialogListFragment extends Fragment {
     }
 
     private List<Dialog> loadDataset() {
-        dialogs = SQLite.select().from(Dialog.class).queryList();
-        return dialogs;
+       return SQLite.select().from(Dialog.class).queryList();
+    }
+
+    private long countDataset(){
+        return SQLite.select().from(Dialog.class).count();
     }
 }
