@@ -88,6 +88,7 @@ public class DialogListFragment extends Fragment {
     }
 
     private long countDataset(){
-        return SQLite.select().from(Dialog.class).count();
+        //return SQLite.select().from(Dialog.class).count();
+        return (long)SQLite.select().from(Dialog.class).queryList().size();
     }
 }
