@@ -91,7 +91,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void saveCredentials(String username, String password ){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.user_name_key),
+                Context.MODE_PRIVATE
+        );
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.user_name_key), username);
         editor.putString(getString(R.string.user_password_key), password);

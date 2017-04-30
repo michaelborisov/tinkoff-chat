@@ -1,6 +1,7 @@
 package borisov.ru.tinkoff_chat.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -55,6 +56,8 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             case R.id.nav_exit:
                 deleteCredentials();
                 finish();
+                Intent goToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(goToLogin);
                 break;
         }
 
@@ -64,7 +67,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     }
 
     private void deleteCredentials(){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.user_name_key),
+                Context.MODE_PRIVATE
+        );
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.user_name_key), "");
         editor.putString(getString(R.string.user_password_key), "");
@@ -102,10 +108,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction = fragmentTransaction.replace(R.id.content_navigation, fragment);
-//        fragmentTransaction.setCustomAnimations(
-//                R.animator.fade_in,
-//                R.animator.fade_out
-//        );
         fragmentTransaction.commit();
     }
 

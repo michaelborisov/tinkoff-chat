@@ -61,15 +61,15 @@ public class SplashScreenActivity extends AppCompatActivity {
             goToNav.putExtra("userName", credentials[0]);
             startActivity(goToNav);
         }else{
-            Intent goToLogin = new Intent(getApplicationContext(), NavigationActivity.class);
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            String userName = sharedPref.getString(getString(R.string.user_name_key), "");
-            goToLogin.putExtra("userName", userName);
+            Intent goToLogin = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(goToLogin);
         }
     }
     private String[] readCredentials(){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.user_name_key),
+                Context.MODE_PRIVATE
+        );
         String userName = sharedPref.getString(getString(R.string.user_name_key), "");
         String userPassword = sharedPref.getString(getString(R.string.user_password_key), "");
         return new String[]{userName, userPassword};
